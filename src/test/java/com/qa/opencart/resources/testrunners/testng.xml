@@ -8,19 +8,19 @@
     </listeners>
 
 
-    <test name="Login Test">
+    <!-- <test name="Login Test">
         <classes>
             <class name="com.qa.opencart.LoginPageTest"/>
         </classes>
     </test>
-    <!-- <test name="Register Page Test">
+    <test name="Register Page Test">
         <classes>
             <class name="com.qa.opencart.RegisterPageTest"/>
         </classes>
-    </test>
+    </test> -->
     <test name="Accounts Page Test">
         <classes>
             <class name="com.qa.opencart.AccountsPageTest"/>
         </classes>
-    </test> -->
+    </test>
 </suite>
