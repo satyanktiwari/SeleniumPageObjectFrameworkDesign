@@ -19,11 +19,11 @@ public class BaseTest {
     WebDriver driver;
     DriverFactory driverFactory;
     Properties prop;
-
     ElementUtils elementUtils;
-    LoginPage loginPage;
+    
 
 //  Only refrence needs to be created do not create object here
+    LoginPage loginPage;
     AccountsPage accPage;
     RegisterPage registerPage;
     ResultsPage resultsPage;

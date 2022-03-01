@@ -47,7 +47,8 @@ public class LoginPageTest extends BaseTest{
         @Description("Login test with valid credentials")
         @Test(priority = 4, description = "Login test with valid username and password")
         public void doLoginTest(){
-            loginPage.doLogin(prop.getProperty("username").trim(),prop.getProperty("password").trim());
+           accPage = loginPage.doLogin(prop.getProperty("username").trim(),prop.getProperty("password").trim());
+           Assert.assertTrue(accPage.isLogoutLinkExist());
         }
 
 }
