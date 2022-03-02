@@ -8,17 +8,32 @@
     </listeners>
 
 
-    <test name="Login Test">
+    <test name="Login Test - chrome 89.0">
+    <parameter name="browser" value="chrome"/>    
+    <parameter name="browserversion" value="89.0"/>
         <classes>
             <class name="com.qa.opencart.LoginPageTest"/>
         </classes>
     </test>
-    <test name="Register Page Test">
+
+    <test name="Login Test - firefox 82.0">
+        <parameter name="browser" value="chrome"/>    
+        <parameter name="browserversion" value="82.0"/>
+            <classes>
+                <class name="com.qa.opencart.LoginPageTest"/>
+            </classes>
+        </test>
+
+    <test name="Register Page Test - firefox 83.0">
+    <parameter name="browser" value="firefox"/>    
+    <parameter name="browserversion" value="83.0"/>
         <classes>
             <class name="com.qa.opencart.RegisterPageTest"/>
         </classes>
     </test>
-    <test name="Accounts Page Test">
+    <test name="Accounts Page Test - chrome 91.0">
+    <parameter name="browser" value="chrome"/>    
+    <parameter name="browserversion" value="91.0"/>
         <classes>
             <class name="com.qa.opencart.AccountsPageTest"/>
         </classes>

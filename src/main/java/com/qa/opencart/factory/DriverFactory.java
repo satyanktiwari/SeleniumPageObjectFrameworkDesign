@@ -37,8 +37,11 @@ public class DriverFactory {
      */
 
     public WebDriver init_driver(Properties prop) {
-        String browser = prop.getProperty("browser");
+        String browser = prop.getProperty("browser").trim();
+        String browserversion = prop.getProperty("browserversion").trim();
         highlight = prop.getProperty("highlight").trim();
+
+        System.out.println("Browser is: " + browser + " and version is: " + browserversion);
 
         optionsManager = new OptionsManager(prop);
        
@@ -46,9 +49,11 @@ public class DriverFactory {
             WebDriverManager.chromedriver().setup();
             // driver = new ChromeDriver(optionsManager.getChromeOptions());
             if(Boolean.parseBoolean(prop.getProperty("remote").trim())){
+                //remote execution
                 init_remoteDriver("chrome");
             }
             else{
+                //local execution
                 tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
             }
         } 
@@ -56,9 +61,11 @@ public class DriverFactory {
             WebDriverManager.firefoxdriver().setup();
             // driver = new FirefoxDriver(optionsManager.getFirefoxOptions());
             if(Boolean.parseBoolean(prop.getProperty("remote").trim())){
+                //remote execution
                 init_remoteDriver("firefox");
             }
             else{
+                //local execution
                 tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
             }
             
@@ -67,9 +74,11 @@ public class DriverFactory {
             WebDriverManager.edgedriver().setup();
             // driver = new EdgeDriver(optionsManager.getEdgeOptions());
             if(Boolean.parseBoolean(prop.getProperty("remote").trim())){
+                //remote execution
                 init_remoteDriver("edge");
             }
             else{
+                //local execution
                 tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
             }
             

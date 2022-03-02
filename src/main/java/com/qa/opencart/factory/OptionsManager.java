@@ -24,6 +24,11 @@ public class OptionsManager {
         if(Boolean.parseBoolean(prop.getProperty("incognito"))){
             co.addArguments("--incognito");
         }
+        if(Boolean.parseBoolean(prop.getProperty("remote"))){
+            co.setBrowserVersion(prop.getProperty("browserversion"));
+            co.setPlatformName("linux");
+            co.setCapability("enableVNC", true);
+        }
         return co;
         
     }
@@ -36,6 +41,11 @@ public class OptionsManager {
         if(Boolean.parseBoolean(prop.getProperty("incognito"))){
             fo.addArguments("--incognito");
         }
+        if(Boolean.parseBoolean(prop.getProperty("remote"))){
+            fo.setBrowserVersion(prop.getProperty("browserversion"));
+            fo.setPlatformName("linux");
+            fo.setCapability("enableVNC", true);
+        }
         return fo;
     }
 
@@ -46,6 +56,11 @@ public class OptionsManager {
         } 
         if(Boolean.parseBoolean(prop.getProperty("incognito"))){
             eo.addArguments("--incognito");
+        }
+        if(Boolean.parseBoolean(prop.getProperty("remote"))){
+            eo.setBrowserVersion(prop.getProperty("browserversion"));
+            eo.setPlatformName("linux");
+            eo.setCapability("enableVNC", true);
         }       
         return eo;
     }
