@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -13,6 +15,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -42,16 +45,36 @@ public class DriverFactory {
         if(browser.equalsIgnoreCase("chrome")) {
             WebDriverManager.chromedriver().setup();
             // driver = new ChromeDriver(optionsManager.getChromeOptions());
-            tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
-        } else if(browser.equalsIgnoreCase("firefox")) {
+            if(Boolean.parseBoolean(prop.getProperty("remote").trim())){
+                init_remoteDriver("chrome");
+            }
+            else{
+                tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
+            }
+        } 
+        else if(browser.equalsIgnoreCase("firefox")) {
             WebDriverManager.firefoxdriver().setup();
             // driver = new FirefoxDriver(optionsManager.getFirefoxOptions());
-            tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
-        } else if(browser.equalsIgnoreCase("edge")) {
+            if(Boolean.parseBoolean(prop.getProperty("remote").trim())){
+                init_remoteDriver("firefox");
+            }
+            else{
+                tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
+            }
+            
+        } 
+        else if(browser.equalsIgnoreCase("edge")) {
             WebDriverManager.edgedriver().setup();
             // driver = new EdgeDriver(optionsManager.getEdgeOptions());
-            tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
-        } else {
+            if(Boolean.parseBoolean(prop.getProperty("remote").trim())){
+                init_remoteDriver("edge");
+            }
+            else{
+                tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
+            }
+            
+        } 
+        else {
             System.out.println("Browser is not supported");
         }        
         getDriver().manage().window().maximize();
@@ -61,6 +84,32 @@ public class DriverFactory {
         getDriver().get(prop.getProperty("url"));
         return getDriver();
 
+    }
+
+    private void init_remoteDriver(String browser) {
+        System.out.println("Remote driver is being initialized: "+ browser);
+        if(browser.equalsIgnoreCase("chrome")){
+            try {
+                tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")) , optionsManager.getChromeOptions()));
+            } catch (MalformedURLException e) {
+                
+                e.printStackTrace();
+            }
+        } else if(browser.equalsIgnoreCase("firefox")){
+            try {
+                tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")) , optionsManager.getFirefoxOptions()));
+            } catch (MalformedURLException e) {
+                
+                e.printStackTrace();
+            }
+        } else if(browser.equalsIgnoreCase("edge")){
+            try {
+                tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")) , optionsManager.getEdgeOptions()));
+            } catch (MalformedURLException e) {
+                
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
