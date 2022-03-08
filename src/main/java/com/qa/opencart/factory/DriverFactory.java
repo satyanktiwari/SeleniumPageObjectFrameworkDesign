@@ -39,6 +39,7 @@ public class DriverFactory {
     public WebDriver init_driver(Properties prop) {
         String browser = prop.getProperty("browser").trim();
         String browserversion = prop.getProperty("browserversion").trim();
+
         highlight = prop.getProperty("highlight").trim();
 
         System.out.println("Browser is: " + browser + " and version is: " + browserversion);
@@ -46,39 +47,42 @@ public class DriverFactory {
         optionsManager = new OptionsManager(prop);
        
         if(browser.equalsIgnoreCase("chrome")) {
-            WebDriverManager.chromedriver().setup();
+
+            
             // driver = new ChromeDriver(optionsManager.getChromeOptions());
-            if(Boolean.parseBoolean(prop.getProperty("remote").trim())){
+            if(Boolean.parseBoolean(prop.getProperty("remote"))){
                 //remote execution
                 init_remoteDriver("chrome");
-            }
-            else{
+            } else {
                 //local execution
+                WebDriverManager.chromedriver().setup();
                 tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
             }
         } 
         else if(browser.equalsIgnoreCase("firefox")) {
-            WebDriverManager.firefoxdriver().setup();
+            
             // driver = new FirefoxDriver(optionsManager.getFirefoxOptions());
-            if(Boolean.parseBoolean(prop.getProperty("remote").trim())){
+            if(Boolean.parseBoolean(prop.getProperty("remote"))){
                 //remote execution
                 init_remoteDriver("firefox");
             }
             else{
                 //local execution
+                WebDriverManager.firefoxdriver().setup();
                 tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
             }
             
         } 
         else if(browser.equalsIgnoreCase("edge")) {
-            WebDriverManager.edgedriver().setup();
+            
             // driver = new EdgeDriver(optionsManager.getEdgeOptions());
-            if(Boolean.parseBoolean(prop.getProperty("remote").trim())){
+            if(Boolean.parseBoolean(prop.getProperty("remote"))){
                 //remote execution
                 init_remoteDriver("edge");
             }
             else{
                 //local execution
+                WebDriverManager.edgedriver().setup();
                 tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
             }
             
@@ -97,9 +101,10 @@ public class DriverFactory {
 
     private void init_remoteDriver(String browser) {
         System.out.println("Remote driver is being initialized: "+ browser);
+        
         if(browser.equalsIgnoreCase("chrome")){
             try {
-                tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")) , optionsManager.getChromeOptions()));
+                tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getChromeOptions()));
             } catch (MalformedURLException e) {
                 
                 e.printStackTrace();
