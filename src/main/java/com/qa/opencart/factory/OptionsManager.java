@@ -18,16 +18,14 @@ public class OptionsManager {
 
     public ChromeOptions getChromeOptions() {
         co = new ChromeOptions();
-        if(Boolean.parseBoolean(prop.getProperty("headless"))) {
-            co.addArguments("--headless");
-        }
-        if(Boolean.parseBoolean(prop.getProperty("incognito"))){
-            co.addArguments("--incognito");
-        }
+        if(Boolean.parseBoolean(prop.getProperty("headless"))) co.addArguments("--headless");
+        if(Boolean.parseBoolean(prop.getProperty("incognito")))co.addArguments("--incognito");
+        
         if(Boolean.parseBoolean(prop.getProperty("remote"))){
             co.setBrowserVersion(prop.getProperty("browserversion"));
             co.setPlatformName("linux");
             co.setCapability("enableVNC", true);
+            //sel 4.x started using setCapability
         }
         return co;
         
@@ -35,12 +33,9 @@ public class OptionsManager {
 
     public FirefoxOptions getFirefoxOptions() {
         fo = new FirefoxOptions();
-        if(Boolean.parseBoolean(prop.getProperty("headless"))) {
-            fo.addArguments("--headless");
-        } 
-        if(Boolean.parseBoolean(prop.getProperty("incognito"))){
-            fo.addArguments("--incognito");
-        }
+        if(Boolean.parseBoolean(prop.getProperty("headless"))) fo.addArguments("--headless");        
+        if(Boolean.parseBoolean(prop.getProperty("incognito")))fo.addArguments("--incognito");
+        
         if(Boolean.parseBoolean(prop.getProperty("remote"))){
             fo.setBrowserVersion(prop.getProperty("browserversion"));
             fo.setPlatformName("linux");
@@ -51,12 +46,10 @@ public class OptionsManager {
 
     public EdgeOptions getEdgeOptions() {
         eo = new EdgeOptions();
-        if(Boolean.parseBoolean(prop.getProperty("headless"))) {
-            eo.addArguments("--headless");
-        } 
-        if(Boolean.parseBoolean(prop.getProperty("incognito"))){
-            eo.addArguments("--incognito");
-        }
+        if(Boolean.parseBoolean(prop.getProperty("headless"))) eo.addArguments("--headless");
+         
+        if(Boolean.parseBoolean(prop.getProperty("incognito"))) eo.addArguments("--incognito");
+        
         if(Boolean.parseBoolean(prop.getProperty("remote"))){
             eo.setBrowserVersion(prop.getProperty("browserversion"));
             eo.setPlatformName("linux");
