@@ -104,21 +104,24 @@ public class DriverFactory {
         
         if(browser.equalsIgnoreCase("chrome")){
             try {
-                tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getChromeOptions()));
+                tlDriver.set(
+                    new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getChromeOptions()));
             } catch (MalformedURLException e) {
                 
                 e.printStackTrace();
             }
         } else if(browser.equalsIgnoreCase("firefox")){
             try {
-                tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")) , optionsManager.getFirefoxOptions()));
+                tlDriver.set(
+                    new RemoteWebDriver(new URL(prop.getProperty("huburl")) , optionsManager.getFirefoxOptions()));
             } catch (MalformedURLException e) {
                 
                 e.printStackTrace();
             }
         } else if(browser.equalsIgnoreCase("edge")){
             try {
-                tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")) , optionsManager.getEdgeOptions()));
+                tlDriver.set(
+                    new RemoteWebDriver(new URL(prop.getProperty("huburl")) , optionsManager.getEdgeOptions()));
             } catch (MalformedURLException e) {
                 
                 e.printStackTrace();
@@ -142,13 +145,52 @@ public class DriverFactory {
 
     public Properties init_properties(){
         prop = new Properties();
-        try {
+        FileInputStream fis = null;
+
+        // mvn clean install -Denv="qa"
+        String envName = System.getProperty("env");// qa/stage/dev/prod
+        System.out.println("Running tests on environment: " + envName);
+
+        if(envName==null){
+            System.out.println("No env is gievn....hence running it on QA");
+			System.out.println("Running tests on QA environment: " + envName);
+            try {
             
-            FileInputStream fis = 
-                new FileInputStream("./src/test/java/com/qa/opencart/resources/config/config.properties");
+                 fis = 
+                    new FileInputStream("./src/test/java/com/qa/opencart/resources/config/config.properties");
+                
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+			try {
+				switch (envName.toLowerCase()) {
+				case "prod":
+					fis = new FileInputStream("./src/test/java/com/qa/opencart/resources/config/config.properties");
+					break;
+
+				case "qa":
+					fis = new FileInputStream("./src/test/java/com/qa/opencart/resources/config/qa.config.properties");
+					break;
+
+				case "dev":
+					fis = new FileInputStream("./src/test/java/com/qa/opencart/resources/config/dev.config.properties");
+					break;
+
+				case "stage":
+					fis = new FileInputStream("./src/test/java/com/qa/opencart/resources/config/stage.config.properties");
+					break;
+
+				default:
+					System.out.println("Please pass the right environment......");
+					break;
+				}
+			} catch (Exception e) {
+			}
+		}
+        try{
             prop.load(fis);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
         catch (IOException e) {
             e.printStackTrace();
