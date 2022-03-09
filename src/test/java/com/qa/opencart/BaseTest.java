@@ -40,7 +40,7 @@ public class BaseTest {
 
         if(browser!=null){
             prop.setProperty("browser", browser);
-            prop.setProperty("browserversion", browser);
+            prop.setProperty("browserversion", browserversion);
         }
 
         // driver = driverFactory.init_driver("chrome");
