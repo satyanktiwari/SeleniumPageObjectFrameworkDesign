@@ -22,15 +22,15 @@
             <classes>
                 <class name="com.qa.opencart.LoginPageTest"/>
             </classes>
-    </test>
+    </test> -->
 
-    <test name="Register Page Test - firefox 83.0">
+    <!-- <test name="Register Page Test - firefox 83.0">
     <parameter name="browser" value="firefox"/>    
     <parameter name="browserversion" value="83.0"/>
         <classes>
             <class name="com.qa.opencart.RegisterPageTest"/>
         </classes>
-    </test>
+    </test> -->
 
     <test name="Accounts Page Test - chrome 91.0">
     <parameter name="browser" value="chrome"/>    
@@ -38,6 +38,6 @@
         <classes>
             <class name="com.qa.opencart.AccountsPageTest"/>
         </classes>
-    </test> -->
+    </test>
 
 </suite>
