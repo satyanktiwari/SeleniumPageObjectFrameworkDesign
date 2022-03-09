@@ -13,6 +13,7 @@ import com.qa.opencart.utils.ElementUtils;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 import org.testng.asserts.SoftAssert;
 
 public class BaseTest {
@@ -31,10 +32,17 @@ public class BaseTest {
     SoftAssert softAssert;
 
 
+    @Parameters({"browser","browserversion"})
     @BeforeTest
-    public void setup(){
+    public void setup(String browser,  String browserversion) {
         driverFactory = new DriverFactory();
         prop = driverFactory.init_properties();
+
+        if(browser!=null){
+            prop.setProperty("browser", browser);
+            prop.setProperty("browserversion", browserversion);
+        }
+
         // driver = driverFactory.init_driver("chrome");
         driver = driverFactory.init_driver(prop);
         loginPage = new LoginPage(driver);

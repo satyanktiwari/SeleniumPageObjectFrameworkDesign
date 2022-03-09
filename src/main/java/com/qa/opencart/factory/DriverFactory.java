@@ -37,39 +37,52 @@ public class DriverFactory {
      */
 
     public WebDriver init_driver(Properties prop) {
-        String browser = prop.getProperty("browser");
+        String browser = prop.getProperty("browser").trim();
+        String browserversion = prop.getProperty("browserversion").trim();
+
         highlight = prop.getProperty("highlight").trim();
+
+        System.out.println("Browser is: " + browser + " and version is: " + browserversion);
 
         optionsManager = new OptionsManager(prop);
        
         if(browser.equalsIgnoreCase("chrome")) {
-            WebDriverManager.chromedriver().setup();
+
+            
             // driver = new ChromeDriver(optionsManager.getChromeOptions());
-            if(Boolean.parseBoolean(prop.getProperty("remote").trim())){
+            if(Boolean.parseBoolean(prop.getProperty("remote"))){
+                //remote execution
                 init_remoteDriver("chrome");
-            }
-            else{
+            } else {
+                //local execution
+                WebDriverManager.chromedriver().setup();
                 tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
             }
         } 
         else if(browser.equalsIgnoreCase("firefox")) {
-            WebDriverManager.firefoxdriver().setup();
+            
             // driver = new FirefoxDriver(optionsManager.getFirefoxOptions());
-            if(Boolean.parseBoolean(prop.getProperty("remote").trim())){
+            if(Boolean.parseBoolean(prop.getProperty("remote"))){
+                //remote execution
                 init_remoteDriver("firefox");
             }
             else{
+                //local execution
+                WebDriverManager.firefoxdriver().setup();
                 tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
             }
             
         } 
         else if(browser.equalsIgnoreCase("edge")) {
-            WebDriverManager.edgedriver().setup();
+            
             // driver = new EdgeDriver(optionsManager.getEdgeOptions());
-            if(Boolean.parseBoolean(prop.getProperty("remote").trim())){
+            if(Boolean.parseBoolean(prop.getProperty("remote"))){
+                //remote execution
                 init_remoteDriver("edge");
             }
             else{
+                //local execution
+                WebDriverManager.edgedriver().setup();
                 tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
             }
             
@@ -88,23 +101,27 @@ public class DriverFactory {
 
     private void init_remoteDriver(String browser) {
         System.out.println("Remote driver is being initialized: "+ browser);
+        
         if(browser.equalsIgnoreCase("chrome")){
             try {
-                tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")) , optionsManager.getChromeOptions()));
+                tlDriver.set(
+                    new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getChromeOptions()));
             } catch (MalformedURLException e) {
                 
                 e.printStackTrace();
             }
         } else if(browser.equalsIgnoreCase("firefox")){
             try {
-                tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")) , optionsManager.getFirefoxOptions()));
+                tlDriver.set(
+                    new RemoteWebDriver(new URL(prop.getProperty("huburl")) , optionsManager.getFirefoxOptions()));
             } catch (MalformedURLException e) {
                 
                 e.printStackTrace();
             }
         } else if(browser.equalsIgnoreCase("edge")){
             try {
-                tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")) , optionsManager.getEdgeOptions()));
+                tlDriver.set(
+                    new RemoteWebDriver(new URL(prop.getProperty("huburl")) , optionsManager.getEdgeOptions()));
             } catch (MalformedURLException e) {
                 
                 e.printStackTrace();
@@ -128,13 +145,53 @@ public class DriverFactory {
 
     public Properties init_properties(){
         prop = new Properties();
-        try {
+        FileInputStream fis = null;
+
+        // mvn clean install -Denv="qa"
+        String envName = System.getProperty("env");// qa/stage/dev/prod
+        System.out.println("Running tests on environment: " + envName);
+
+        if(envName==null){
+            System.out.println("No env is given....hence running it on QA");
+			System.out.println("Running tests on QA environment: " + envName);
+            try {
             
-            FileInputStream fis = 
-                new FileInputStream("./src/test/java/com/qa/opencart/resources/config/config.properties");
+                 fis = 
+                    new FileInputStream("./src/test/java/com/qa/opencart/resources/config/config.properties");
+                
+            } catch (FileNotFoundException e) {
+                System.out.println("\n default file not found ");
+                e.printStackTrace();
+            }
+
+        } else {
+			try {
+				switch (envName.toLowerCase()) {
+				case "prod":
+					fis = new FileInputStream("./src/test/java/com/qa/opencart/resources/config/config.properties");
+					break;
+
+				case "qa":
+					fis = new FileInputStream("./src/test/java/com/qa/opencart/resources/config/qa.config.properties");
+					break;
+
+				case "dev":
+					fis = new FileInputStream("./src/test/java/com/qa/opencart/resources/config/dev.config.properties");
+					break;
+
+				case "stage":
+					fis = new FileInputStream("./src/test/java/com/qa/opencart/resources/config/stage.config.properties");
+					break;
+
+				default:
+					System.out.println("Please pass the right environment......");
+					break;
+				}
+			} catch (Exception e) {
+			}
+		}
+        try{
             prop.load(fis);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
         catch (IOException e) {
             e.printStackTrace();
