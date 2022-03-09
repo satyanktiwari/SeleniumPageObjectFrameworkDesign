@@ -152,7 +152,7 @@ public class DriverFactory {
         System.out.println("Running tests on environment: " + envName);
 
         if(envName==null){
-            System.out.println("No env is gievn....hence running it on QA");
+            System.out.println("No env is given....hence running it on QA");
 			System.out.println("Running tests on QA environment: " + envName);
             try {
             
@@ -160,6 +160,7 @@ public class DriverFactory {
                     new FileInputStream("./src/test/java/com/qa/opencart/resources/config/config.properties");
                 
             } catch (FileNotFoundException e) {
+                System.out.println("\n default file not found ");
                 e.printStackTrace();
             }
 
